@@ -28,8 +28,8 @@ def order_detail(request):
     }
     return render(request, "order_detail.html", context)
 
-def base(request):
-    return landing(request)
+# def base(request):
+#     return landing(request)
 
 def thanks(request):
     return render(request, "thanks.html")

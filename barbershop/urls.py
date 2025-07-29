@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path
 from core.views import(
-    index,
     landing,
     orders_list,
     thanks,
@@ -11,8 +10,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path("index/", index, name="index"),
-    path('admin/', admin.site.urls),
+    # path("index/", index, name="index"),
+    # path('admin/', admin.site.urls),
     path('', landing, name='landing'),
     path('thanks/', thanks, name='thanks'),
     path('orders/', orders_list, name='orders_list'),
