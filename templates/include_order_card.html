@@ -1,0 +1,42 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ order.client_name }}</h5>
+
+        <h6 class="card-subtitle mb-2 text-muted">{{ order.date }}</h6>
+        
+        <p class="card-text">
+            Услуги:
+            <ul>
+                {% for service in order.services %}
+                <li>{{ service }}</li>
+                {% endfor %}
+            </ul>
+        </p>
+        
+        <p class="card-text">
+            Мастер: 
+            {% for master in masters %}
+                {% if master.id == order.master_id %}
+                    {{ master.name }}
+                {% endif %}
+            {% endfor %}
+        </p>
+        
+        <i class="card-text"></i> Статус заявки: 
+            {% if order.status == 'new' %}
+                <span class="badge bg-primary"><i class="bi bi-plus-circle"></i> Новая(почти) </span>
+            {% elif order.status == 'confirmed' %}
+                <span class="badge bg-success"><i class="bi bi-check-circle"></i> Подтверждённая холопом </span>
+            {% elif order.status == 'cancelled' %}
+                <span class="badge bg-danger"><i class="bi bi-x-circle"></i>Галя отмена</span>
+            {% elif order.status == 'completed' %}
+                <span class="badge bg-info"><i class="bi bi-check2-all"></i>Выполненная</span>
+            {% else %}
+                <span class="badge bg-secondary"><i class="bi bi-question-circle"></i>Неизвестность пугает</span>
+            {% endif %} 
+        
+        <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-outline-primary">
+            Подробнее <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</div>

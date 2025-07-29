@@ -7,7 +7,7 @@ from .data import *
 
 def landing(request):
     context = {
-        "title": "Барбершоп: напоят и побьют",
+        "title": "Барбершоп «Не здох и ладно»",
         "masters": masters[:4],
         "services": services,
     }
