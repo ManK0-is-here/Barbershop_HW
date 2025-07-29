@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <section id="about" class="row my-5 py-5">
+        <div class="col-md-8">
+            <img src="{% static 'images/barbershop.png' %}" alt="Наш барбершоп" class="img-fluid rounded shadow">
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <h2>О нас</h2>
+                <p>За последствия не отвечаем, приходить в бронежелете!</p>
+            </div>
+        </div>
+    </section>
+
+
+<section id="services" class="mb-5">
+    <h2>Наши услуги</h2>
+    <div class="row">
+        {% for service in services %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ service }}</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+<section id="masters" class="mb-5">
+    <h2>Наши мастера</h2>
+    <div class="row">
+        {% for master in masters %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ master.name }}</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="booking">
+    <h2>Записаться</h2>
+</section>
+{% endblock %}
