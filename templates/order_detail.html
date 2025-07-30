@@ -1,5 +1,23 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block content %}
+
+
+<h2>Заявка от {{ order.client_name }}</h2>
+<p>Телефон: {{ order.phone }}</p>
+<p>Статус: {{ order.get_status_display }}</p>
+<p>Услуги: 
+    {% for service in order.services.all %}
+    {{ service.name }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+</p>
+
+{% endblock %}
+
+{% comment %} {% extends 'base.html' %}
+
 {% block title %}Заявка №{{ order.id }}{% endblock %}
 
 {% block content %}
@@ -48,4 +66,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock %} {% endcomment %}

@@ -13,19 +13,16 @@ def landing(request):
     return render(request, 'landing.html', {'masters': masters, 'reviews': reviews})
 
 
+@login_required
 def orders_list(request):
-    context = {
-        "orders": orders,
-        "title": "Список заявок",
-    }
-    return render(request, "orders_list.html", context)
 
-def order_detail(request):
-    context = {
-        "order": orders,
-        "title": "Заявка",
-    }
-    return render(request, "order_detail.html", context)
+    orders = Order.objects.all().order_by('-date_created')
+    return render(request,'orders_list.html', {'orders': orders})
+
+@login_required
+def order_detail(request, pk):
+    order  = get_object_or_404(Order, pk=pk)
+    return render(request, 'order_detail.html', {'order': order})
 
 def thanks(request):
     return render(request, "thanks.html")

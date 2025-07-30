@@ -14,7 +14,7 @@ urlpatterns = [
     path('', landing, name='landing'),
     path('thanks/', thanks, name='thanks'),
     path('orders/', orders_list, name='orders_list'),
-    path('order/<int:order_id>/', order_detail, name='order_detail')
+    path('order/<int:pk>/', order_detail, name='order_detail')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
