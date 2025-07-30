@@ -53,7 +53,7 @@ class Order(models.Model):
     date_updated = models.DateTimeField(null=True, auto_now=True, verbose_name="Дата обновления")
 
     master = models.ForeignKey(
-        Master,
+        "Master",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -113,7 +113,7 @@ class Review(models.Model):
         verbose_name="Имя клиента")
     
     master = models.ForeignKey(
-        Master,
+        "Master",
         on_delete=models.SET_NULL,
         null=True,
         verbose_name="Мастер")
