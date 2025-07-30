@@ -4,7 +4,67 @@
 
 {% block content %}
 
-    <section id="about" class="row my-5 py-5">
+<section id="masters" class="mb-5">
+    <h2>Наши мастера</h2>
+    <div class="row">
+        {% for master in masters %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+
+                {% if master.photo %}
+                <img src="{{ master.photo.url }}" class="card-img-top" alt="{{ master.name }}">
+                {% endif %}
+
+                <div class="card-body">
+                    
+                    <h5 class="card-title">{{ master.name }}</h5>
+                    <p class="card-text">Стаж: {{ master.experience }} лет</p>
+
+                    <p class="card-text">Услуги: 
+                        {% for service in master.services.all %}
+                        {{ service.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+<section id="reviews" class="mb-5">
+    <h2>Отзывы клиентов</h2>
+    <div class="row">
+        {% for review in reviews %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        {{ review.client_name|default:"Аноним" }} 
+                        <span class="badge bg-primary">{{ review.get_rating_display }}</span>
+                    </h5>
+
+                    <p class="card-text">{{ review.text }}</p>
+                    <p class="text-muted">О мастере: {{ review.master.name }}</p>
+                
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+
+
+
+
+
+
+
+    {% comment %} <section id="about" class="row my-5 py-5">
         <div class="col-md-8">
             <img src="{% static 'images/barbershop.png' %}" alt="Наш барбершоп" class="img-fluid rounded shadow">
         </div>
@@ -33,22 +93,9 @@
 </section>
 
 
-<section id="masters" class="mb-5">
-    <h2>Наши мастера</h2>
-    <div class="row">
-        {% for master in masters %}
-        <div class="col-md-4 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">{{ master.name }}</h5>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</section>
+
 
 <section id="booking">
     <h2>Записаться</h2>
 </section>
-{% endblock %}
+{% endblock %} {% endcomment %}
