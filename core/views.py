@@ -4,7 +4,7 @@ from .data import *
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-
+from django.db.models import Q
 
 
 def landing(request):
@@ -15,9 +15,35 @@ def landing(request):
 
 @login_required
 def orders_list(request):
-
     orders = Order.objects.all().order_by('-date_created')
-    return render(request,'orders_list.html', {'orders': orders})
+    
+    query = request.GET.get('query', '')
+    search_client_name = 'search_client_name' in request.GET
+    search_phone = 'search_phone' in request.GET
+    search_comment = 'search_comment' in request.GET
+    
+    if query:
+        q_objects = Q()
+
+        if search_client_name or not any([search_client_name, search_phone, search_comment]):
+            q_objects |= Q(client_name__icontains=query)
+        
+        if search_phone:
+            q_objects |= Q(phone__icontains=query)
+        
+        if search_comment:
+            q_objects |= Q(comment__icontains=query)
+        
+        orders = orders.filter(q_objects)
+    
+    return render(request, 'orders_list.html', {
+        'orders': orders,
+        'query': query,
+        'search_client_name': search_client_name,
+        'search_phone': search_phone,
+        'search_comment': search_comment
+    })
+
 
 @login_required
 def order_detail(request, pk):
