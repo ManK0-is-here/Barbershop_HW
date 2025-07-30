@@ -1,15 +1,16 @@
 from django.shortcuts import render
-# from django.http import HttpResponse
+from django.http import HttpResponse
 from .data import *
+from .models import *
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+
 
 
 def landing(request):
-    context = {
-        "title": "Барбершоп «Не здох и ладно»",
-        "masters": masters[:4],
-        "services": services,
-    }
-    return render(request, "landing.html", context)
+    masters = Master.objects.filter(is_active=True)
+    reviews = Review.objects.filter(is_published=True).order_by('-created_at')[:6]
+    return render(request, 'landing.html', {'masters': masters, 'reviews': reviews})
 
 
 def orders_list(request):
@@ -25,9 +26,6 @@ def order_detail(request):
         "title": "Заявка",
     }
     return render(request, "order_detail.html", context)
-
-# def base(request):
-#     return landing(request)
 
 def thanks(request):
     return render(request, "thanks.html")
