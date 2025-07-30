@@ -1,7 +1,5 @@
-from pickle import FLOAT
-from token import NAME, STRING
 from django.shortcuts import render
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from .data import *
 
 
