@@ -21,8 +21,7 @@ class Master(models.Model):
 
     is_active = models.BooleanField(
         default=True, 
-        verbose_name="Активен"
-    )
+        verbose_name="Активен")
 
     def __str__(self):
         return self.name
@@ -34,7 +33,7 @@ class Order(models.Model):
         ('new', 'Новая'),
         ('confirmed', 'Подтверждена'),
         ('cancelled', 'Отменена'),
-        ('completed', 'Выполнена'),
+        ('completed', 'Выполнена')
     ]
 
     client_name = models.CharField(max_length=100, verbose_name="Имя клиента")
@@ -51,7 +50,7 @@ class Order(models.Model):
 
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания") 
 
-    date_updated = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+    date_updated = models.DateTimeField(null=True, auto_now=True, verbose_name="Дата обновления")
 
     master = models.ForeignKey(
         Master,
