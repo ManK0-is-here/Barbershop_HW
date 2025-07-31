@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                
+                <div class="card-header bg-warning text-dark">
+                    <h2 class="mb-0">
+                        <i class="bi bi-scissors"></i> Запись свой страх и риск
+                    </h2>
+                    <small>Худшее ещё может произойти</small>
+                </div>
+                
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Say you name</label>
+                                {{ form.client_name }}
+                            </div>
+                            
+                            <div class="col-md-6">
+
+                                <label class="form-label fw-bold">Телефон</label>
+                                {{ form.phone }}
+
+                            </div>
+                            
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Выберите "dangeon мастера"</label>
+                            {{ form.master }}
+                        </div>
+                        
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">Услуги</label>
+                            
+                            <div class="border p-3 rounded bg-light" id="services-container">
+
+                                {% if form.master.value %}
+                                    {{ form.services }}
+                                {% else %}
+                                    <p class="text-muted m-0">
+                                        Сначала выберите мастера, чтобы увидеть доступные услуги
+                                    </p>
+                                {% endif %}
+
+                            </div>
+
+                            <div class="form-text">
+                                Выберите услуги, которые предоставляет выбранный мастер
+                            </div>
+
+                        </div>
+                        
+                        <div class="row mb-4">
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">День и время</label>
+                                {{ form.appointment_date }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Комментарий</label>
+                                {{ form.comment }}
+                            </div>
+
+                        </div>
+                        
+                        <button type="submit" class="btn btn-warning text-dark w-100 py-2 fw-bold">
+                            <i class="bi bi-check-circle"></i> Подписать договор о принятии неизбежности 
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content%}

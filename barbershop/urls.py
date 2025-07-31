@@ -11,7 +11,7 @@ urlpatterns = [
     path('orders/', orders_list, name='orders_list'),
     path('order/<int:pk>/', order_detail, name='order_detail'),
     path('review/create/', create_review, name='create_review'),
-    path('review/create/', create_order, name='create_order'),
+    path('order/create/', create_order, name='create_order'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
