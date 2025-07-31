@@ -21,6 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
+MISTRAL_API_KEY = os.getenv('MISTRAL_API_KEY')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -174,5 +175,15 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-
+MISTRAL_MODERATIONS_GRADES = {
+    "hate_and_discrimination": 0.1,
+    "sexual": 0.1,
+    "violence_and_threats": 0.1,
+    "dangerous_and_criminal_content": 0.1,
+    "selfharm": 0.1,
+    "health": 0.1,
+    "financial": 0.1,
+    "law": 0.1,
+    "pii": 0.1,
+}
 
