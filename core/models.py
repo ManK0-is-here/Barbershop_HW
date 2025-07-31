@@ -1,7 +1,6 @@
 from django.db import models
 
 class Master(models.Model):
-
     name = models.CharField(max_length=150, verbose_name="Имя")
 
     photo = models.ImageField(upload_to="masters/", blank=True, verbose_name="Фотография", null=True)
@@ -15,16 +14,21 @@ class Master(models.Model):
         help_text="Опыт работы в годах")
 
     services = models.ManyToManyField(
-        "Service", 
+        "Service",
         related_name="masters",
         verbose_name="Услуги")
 
     is_active = models.BooleanField(
         default=True, 
         verbose_name="Активен")
-
+    
+    
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "Мастер"
+        verbose_name_plural="Мастера"
 
 
 class Order(models.Model):
@@ -68,6 +72,10 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Заказ #{self.id}: {self.client_name}"
+    
+    class Meta:
+        verbose_name = "Запись"
+        verbose_name_plural="Записи"
 
 
 class Service(models.Model):
@@ -93,6 +101,11 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
+    
+    
+    class Meta:
+        verbose_name = "Услуга"
+        verbose_name_plural="Услуги"
 
 
 class Review(models.Model):
@@ -135,3 +148,7 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Отзыв #{self.id} - {self.get_rating_display()}"
+    
+    class Meta:
+        verbose_name = "Отзыв"
+        verbose_name_plural="Отзывы"
