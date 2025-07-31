@@ -10,7 +10,6 @@ from django.db.models import Count
 admin.site.register(Master)
 admin.site.register(Order)
 admin.site.register(Review)
-# admin.site.register(Service)
 
 class MastersCountFilter(admin.SimpleListFilter):
     title = "Количество мастеров"
@@ -54,6 +53,5 @@ class ServiceAdmin(admin.ModelAdmin):
     @admin.action(description="Сделать не популярным")
     def make_not_popular(self, request, queryset):
         queryset.update(is_popular=False)
-
 
 admin.site.register(Service, ServiceAdmin)
