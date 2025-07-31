@@ -22,6 +22,9 @@ load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 MISTRAL_API_KEY = os.getenv('MISTRAL_API_KEY')
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
