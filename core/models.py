@@ -110,18 +110,18 @@ class Service(models.Model):
 
 class Review(models.Model):
 
-    AI_STATUS_CHOICES = [
-        ('ai_checked_true', '✅ Проверено ИИ'),
-        ('ai_cancelled', '❌ Отклонено ИИ'),
-        ('in_progress', '🔄 В процессе'),
-        ('not_checked', '⏳ Не проверено'),
+    AI_CHOICES = [
+    ("ai_checked_true", "Проверено ИИ"),
+    ("ai_cancelled", "Отменено ИИ"),
+    ("ai_checked_in_progress", "В процессе проверки"),
+    ("ai_checked_false", "Не проверено"),
     ]
-    
-    ai_status = models.CharField(
-        max_length=20,
-        choices=AI_STATUS_CHOICES,
-        default='not_checked',
-        verbose_name='Статус модерации'
+
+    ai_checked_status = models.CharField(
+        max_length=30,
+        choices=AI_CHOICES,
+        default="ai_checked_false",
+        verbose_name="Статус ИИ",
     )
 
     RATING_CHOICES = [

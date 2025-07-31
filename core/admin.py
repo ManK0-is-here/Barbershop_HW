@@ -1,15 +1,12 @@
-"""
-Мой первоначальный вариант админки постоянно что то не работало поэтому я украл код)))
-
-"""
-
 from django.contrib import admin
 from .models import *
 from django.db.models import Count
 
-admin.site.register(Master)
-admin.site.register(Order)
-admin.site.register(Review)
+class ReviewInline(admin.TabularInline):
+    model = Review
+    extra = 0
+    max_num = 5
+    fields = ('client_name', 'rating', 'is_published')
 
 class MastersCountFilter(admin.SimpleListFilter):
     title = "Количество мастеров"
@@ -32,26 +29,35 @@ class MastersCountFilter(admin.SimpleListFilter):
             return queryset.filter(masters_count__gte=4)
         return queryset
 
+@admin.register(Master)
+class MasterAdmin(admin.ModelAdmin):
+    inlines = [ReviewInline]  
 
-class ServiceAdmin(admin.ModelAdmin):
-    list_display = ["name", "duration", "is_popular", "price", "masters_count"]
-    search_fields = ["name", "description"]
-    list_filter = ["is_popular", "duration", "price", MastersCountFilter]
-    list_display_links = ["name"]
-    list_editable = ["is_popular", "price", "duration"]
-    actions = ["make_popular", "make_not_popular"]
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    pass
 
-
-    @admin.display(description="Количество мастеров")
-    def masters_count(self, obj):
-        return obj.masters.count()
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    actions = ['publish_reviews', 'unpublish_reviews'] 
     
-    @admin.action(description="Сделать популярным")
+    @admin.action(description='Опубликовать выбранные отзывы')
+    def publish_reviews(self, request, queryset):
+        queryset.update(is_published=True)
+    
+    @admin.action(description='Снять с публикации')
+    def unpublish_reviews(self, request, queryset):
+        queryset.update(is_published=False)
+
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_filter = [MastersCountFilter] 
+    actions = ['make_popular', 'make_not_popular']  
+    
+    @admin.action(description="Сделать популярными")
     def make_popular(self, request, queryset):
         queryset.update(is_popular=True)
-
-    @admin.action(description="Сделать не популярным")
+    
+    @admin.action(description="Сделать непопулярными")
     def make_not_popular(self, request, queryset):
         queryset.update(is_popular=False)
-
-admin.site.register(Service, ServiceAdmin)
