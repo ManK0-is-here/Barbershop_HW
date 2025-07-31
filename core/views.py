@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .data import *
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from .forms import *
+from django.contrib import messages
 
 
 def landing(request):
@@ -63,6 +63,7 @@ def create_review(request):
         form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Отзыв отправлен! Спасибо что настолько смелые!')
             return redirect('thanks')
     else:
         form = ReviewForm()
@@ -78,6 +79,7 @@ def create_order(request):
             order.status = 'new'
             order.save()
             form.save_m2m()
+            messages.success(request, 'Заявка создана! Скоро с вами обязательно наверно вяжутся для подтверждения.')
             return redirect('thanks')
     else:
         form = OrderForm()
