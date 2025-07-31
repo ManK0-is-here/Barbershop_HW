@@ -9,6 +9,7 @@ def menu_barbershop(request):
         {"name": "Мастера", "url": reverse("landing") + "#masters"},
         {"name": "Услуги", "url": reverse("landing") + "#services"},
         {"name": "Запись", "url": reverse("landing") + "#booking"},
+        {"name": "Спасибо", "url": reverse("thanks")},
     ]
 
     return menu_context
