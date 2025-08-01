@@ -1,87 +1,113 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import *
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from .forms import *
+from .models import *
+from django.views.generic import *
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
-def landing(request):
-    masters = Master.objects.filter(is_active=True)
-    reviews = Review.objects.filter(is_published=True).order_by('-created_at')[:6]
-    return render(request, 'landing.html', {'masters': masters, 'reviews': reviews})
+class LandingView(TemplateView):
+    template_name = 'landing.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context['masters'] = Master.objects.filter(is_active=True)
+        context['reviews'] = Review.objects.filter(
+            is_published=True
+        ).order_by('-created_at')[:6]
+
+        return context
 
 
-@login_required
-def orders_list(request):
-    orders = Order.objects.all().order_by('-date_created')
-    
-    query = request.GET.get('query', '')
-    search_client_name = 'search_client_name' in request.GET
-    search_phone = 'search_phone' in request.GET
-    search_comment = 'search_comment' in request.GET
-    
-    if query:
-        q_objects = Q()
+class OrdersListView(LoginRequiredMixin, ListView):
 
-        if search_client_name or not any([search_client_name, search_phone, search_comment]):
-            q_objects |= Q(client_name__icontains=query)
+    model = Order
+    template_name = 'orders_list.html'
+    context_object_name = 'orders'
+    ordering = ['-date_created']
+
+    def get_queryset(self):
+
+        queryset = super().get_queryset()
+        query = self.request.GET.get('query', '')
         
-        if search_phone:
-            q_objects |= Q(phone__icontains=query)
+        if query:
+            q_objects = Q()
+
+            if 'search_client_name' in self.request.GET or not any([
+                'search_client_name',
+                'search_phone',
+                'search_comment'
+            ]):
+                q_objects |= Q(client_name__icontains=query)
+            
+            if 'search_phone' in self.request.GET:
+                q_objects |= Q(phone__icontains=query)
+            
+            if 'search_comment' in self.request.GET:
+                q_objects |= Q(comment__icontains=query)
+            
+            queryset = queryset.filter(q_objects)
         
-        if search_comment:
-            q_objects |= Q(comment__icontains=query)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('query', '')
+        context['search_client_name'] = 'search_client_name' in self.request.GET
+        context['search_phone'] = 'search_phone' in self.request.GET
+        context['search_comment'] = 'search_comment' in self.request.GET
+
+        return context
+
+
+class OrderDetailView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = 'order_detail.html'
+    context_object_name = 'order'
+
+
+class ThanksView(TemplateView):
+    template_name = 'thanks.html'
+
+
+
+class ReviewCreateView(CreateView):
+
+    model = Review
+    form_class = ReviewForm
+    template_name = 'create_review.html'
+    success_url = reverse_lazy('thanks')
+
+    def form_valid(self, form):
+
+        response = super().form_valid(form)
+        messages.success(
+            self.request,
+            'Отзыв отправлен! Спасибо что настолько смелые!'
+        )
         
-        orders = orders.filter(q_objects)
+        return response
+
+class OrderCreateView(CreateView):
+
+    model = Order
+    form_class = OrderForm
+    template_name = 'create_order.html'
+    success_url = reverse_lazy('thanks')
+
+    def form_valid(self, form):
     
-    return render(request, 'orders_list.html', {
-        'orders': orders,
-        'query': query,
-        'search_client_name': search_client_name,
-        'search_phone': search_phone,
-        'search_comment': search_comment
-    })
-
-
-@login_required
-def order_detail(request, pk):
-    order  = get_object_or_404(Order, pk=pk)
-    return render(request, 'order_detail.html', {'order': order})
-
-
-def thanks(request):
-    return render(request, "thanks.html")
-
-
-
-def create_review(request):
-
-    if request.method == 'POST':
-        form = ReviewForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Отзыв отправлен! Спасибо что настолько смелые!')
-            return redirect('thanks')
-    else:
-        form = ReviewForm()
-    
-    return  render(request, 'create_review.html', {'form': form})
-
-def create_order(request):
-
-    if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
-            order.status = 'new'
-            order.save()
-            form.save_m2m()
-            messages.success(request, 'Заявка создана! Скоро с вами обязательно наверно вяжутся для подтверждения.')
-            return redirect('thanks')
-    else:
-        form = OrderForm()
-    
-    return render(request, 'create_order.html', {'form': form})
+        order = form.save(commit=False)
+        order.status = 'new'
+        order.save()
+        form.save_m2m()
+        
+        messages.success(
+            self.request,
+            'Заявка создана! Скоро с вами обязательно наверно вяжутся для подтверждения.'
+        )
+        
+        return super().form_valid(form)
