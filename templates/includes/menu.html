@@ -19,6 +19,7 @@
             <ul class="navbar-nav">
 
                 {% if user.is_authenticated %}
+
                 <li class="nav-item dropdown">
                     
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -54,20 +55,26 @@
                     </a>
                 </li>
                 {% endif %}
-                
+
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">
-                        <i class="bi bi-box-arrow-right"></i> Выход
-                    </a>
+
+                    <form action="{% url 'logout' %}" method="post" class="d-inline">
+                        {% csrf_token %}
+
+                        <button type="submit" class="nav-link btn btn-link" style="display: inline; padding: 0.5rem 1rem;">
+                            <i class="bi bi-box-arrow-right"></i> Покинуть
+                        </button>
+
+                    </form>
                 </li>
                 
                 {% else %} 
 
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">
-                        <i class="bi bi-box-arrow-in-right"></i> Вход
+                        <i class="bi bi-box-arrow-in-right"></i> Заходи дорогой
                     </a>
-                </li>
+                </li> 
 
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'register' %}">
