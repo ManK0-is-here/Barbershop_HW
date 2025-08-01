@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+
+                <div class="card-header bg-primary text-white">
+                    <h4>Профиль пользователя</h4>
+                </div>
+
+                <div class="card-body text-center">
+                    
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" alt="Аватар" class="rounded-circle mb-3" width="150" height="150">
+                    {% else %}
+                        <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px;">
+                            <span class="text-white">Нет аватара</span>
+                        </div>
+                    {% endif %}
+                    
+                    <h5>{{ profile.user.username }}</h5>
+                    <p class="text-muted">{{ profile.user.email }}</p>
+                    <a href="{% url 'profile_edit' %}" class="btn btn-outline-primary btn-sm">Редактировать</a>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card mb-4">
+
+                <div class="card-header">Информация</div>
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <p class="mb-0">Дата рождения</p>
+                        </div>
+
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ profile.birth_date|default:"Не указана" }}</p>
+                        </div>
+
+                    </div>
+
+                    <hr>
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <p class="mb-0">Telegram</p>
+                        </div>
+
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ profile.telegram_id|default:"Не указан" }}</p>
+                        </div>
+
+                    </div>
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <p class="mb-0">GitHub</p>
+                        </div>
+
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ profile.github_id|default:"Не указан" }}</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+
+                <div class="card-header bg-primary text-white">
+                    <h4>Редактирование профиля</h4>
+                </div>
+
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Имя пользователя</label>
+                            {{ form.username }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Email</label>
+                            {{ form.email }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_avatar" class="form-label">Аватар</label>
+                            {{ form.avatar }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_birth_date" class="form-label">Дата рождения</label>
+                            {{ form.birth_date }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_telegram_id" class="form-label">Telegram ID</label>
+                            {{ form.telegram_id }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_github_id" class="form-label">GitHub ID</label>
+                            {{ form.github_id }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                        <a href="{% url 'profile_detail' %}" class="btn btn-secondary">Отмена</a>
+                    
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
