@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from .forms import *
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
 
 def landing(request):
     masters = Master.objects.filter(is_active=True)

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+{% comment %} <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="{% url 'landing' %}">«Не здох и ладно»</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -46,6 +46,74 @@
                 {% endif %}
             </ul>
             {% endif %}
+        </div>
+    </div>
+</nav> {% endcomment %}
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <div class="container">
+
+        <a class="navbar-brand" href="{% url 'landing' %}">«Не здох и ладно»</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav me-auto">
+
+                {% for item in main_menu %}
+                <li class="nav-item">
+
+                    <a class="nav-link {% if request.path == item.url %}active{% endif %}" 
+                        href="{{ item.url }}">
+                        {{ item.name }}
+                    </a>
+                    
+                </li>
+                {% endfor %}
+
+            </ul>
+            
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'orders_list' %}">
+                        <i class="bi bi-clipboard-check"></i> Заявки
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-person-circle"></i> {{ user.username }}
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">
+                        <i class="bi bi-box-arrow-right"></i> Выход
+                    </a>
+                </li>
+
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">
+                        <i class="bi bi-box-arrow-in-right"></i> Вход
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">
+                        <i class="bi bi-person-plus"></i> Регистрация
+                    </a>
+                </li>
+
+                {% endif %}
+            </ul>
         </div>
     </div>
 </nav>
