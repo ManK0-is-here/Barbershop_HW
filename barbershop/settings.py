@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "core",
     'django_extensions',
+    'users.apps.UsersConfig',
 ]
 
 JAZZMIN_SETTINGS = {
@@ -190,3 +191,6 @@ MISTRAL_MODERATIONS_GRADES = {
     "pii": 0.1,
 }
 
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/' # Куда перенаправить после успешного входа
+LOGOUT_REDIRECT_URL = '/' # Куда перенаправить после выхода
