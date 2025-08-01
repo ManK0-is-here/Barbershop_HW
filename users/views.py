@@ -1,33 +1,28 @@
-from django.shortcuts import render, redirect
-
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserLoginForm
+from django.urls import reverse_lazy
+from django.contrib.auth.views import *
+from django.views.generic import CreateView
 
-def register_view(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'users/register.html', {'form': form})
 
-def login_view(request):
-    if request.method == 'POST':
-        form = UserLoginForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('landing')
-    else:
-        form = UserLoginForm()
-    return render(request, 'users/login.html', {'form': form})
+class CustomLoginView(LoginView):
 
-def logout_view(request):
-    logout(request)
-    return redirect('landing')
+    form_class = UserLoginForm
+    template_name = 'users/login.html'
+    redirect_authenticated_user = True
+    
+    def get_success_url(self):
+        return reverse_lazy('landing')
+
+
+class CustomLogoutView(LogoutView):
+    next_page = reverse_lazy('landing')
+
+
+class RegisterView(CreateView):
+
+    form_class = UserRegisterForm
+    template_name = 'users/register.html'
+    success_url = reverse_lazy('login')
+    
+    def form_valid(self, form):
+        return super().form_valid(form)
