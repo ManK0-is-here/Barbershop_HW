@@ -46,9 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "core",
     'django_extensions',
     'users.apps.UsersConfig',
+    "core",
 ]
 
 JAZZMIN_SETTINGS = {
@@ -194,3 +194,5 @@ MISTRAL_MODERATIONS_GRADES = {
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/' # Куда перенаправить после успешного входа
 LOGOUT_REDIRECT_URL = '/' # Куда перенаправить после выхода
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
