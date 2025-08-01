@@ -18,8 +18,14 @@
                         {{ form.as_p }}
                         
                         <button type="submit" class="btn btn-primary">Ворваться</button>
-                    
                     </form>
+
+                    <div class="mt-3 text-center">
+                        <a href="{% url 'password_reset' %}" class="text-decoration-none">
+                            Альцгеймер? (для тех кто забыл пароль)
+                        </a>
+                    </div>
+
                 </div>
 
             </div>

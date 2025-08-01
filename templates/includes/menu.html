@@ -18,63 +18,35 @@
             
             <ul class="navbar-nav">
 
-                {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
 
-                <li class="nav-item dropdown">
+            <li class="nav-item dropdown">
+
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle"></i> {{ user.username }}
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+
+                    <li><a class="dropdown-item" href="{% url 'profile_detail' %}">Профиль</a></li>
+                    <li><a class="dropdown-item" href="{% url 'profile_edit' %}">Редактировать профиль</a></li>
+                    <li><a class="dropdown-item" href="{% url 'password_change' %}">Сменить пароль</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item">Выход</button>
+                        </form>
+                    </li>
+                </ul>
                     
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-clipboard-check"></i> Заявки
-                    </a>
-
-                    <ul class="dropdown-menu dropdown-menu-end">
-
-                        <li>
-                            <a class="dropdown-item" href="{% url 'orders_list' %}">
-                                <i class="bi bi-list"></i> Список заявок
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{% url 'thanks' %}">
-                                <i class="bi bi-check-circle"></i> Страница благодарности
-                            </a>
-                        </li>
-                    </ul>
                 </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="bi bi-person-circle"></i> {{ user.username }}
-                    </a>
-                </li>
-                
-                {% if user.is_staff %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'admin:index' %}">
-                        <i class="bi bi-gear"></i> Админка
-                    </a>
-                </li>
-                {% endif %}
-
-                <li class="nav-item">
-
-                    <form action="{% url 'logout' %}" method="post" class="d-inline">
-                        {% csrf_token %}
-
-                        <button type="submit" class="nav-link btn btn-link" style="display: inline; padding: 0.5rem 1rem;">
-                            <i class="bi bi-box-arrow-right"></i> Покинуть
-                        </button>
-
-                    </form>
-                </li>
-                
-                {% else %} 
-
+                {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">
-                        <i class="bi bi-box-arrow-in-right"></i> Заходи дорогой
-                    </a>
-                </li> 
+                        <i class="bi bi-box-arrow-in-right"></i> Вход
+                    </a>    
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'register' %}">
