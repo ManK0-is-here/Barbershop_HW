@@ -10,7 +10,7 @@ urlpatterns = [
     path('thanks/', ThanksView.as_view(), name='thanks'),
     path('orders/', OrdersListView.as_view(), name='orders_list'),
     path('order/<int:pk>/', OrderDetailView.as_view(), name='order_detail'),
-    path('review/create/', CreateView.as_view(), name='create_review'),
+    path('review/create/', ReviewCreateView.as_view(), name='create_review'),
     path('order/create/', OrderCreateView.as_view(), name='create_order'),
     path('users/', include('users.urls'))
 

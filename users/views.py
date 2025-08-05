@@ -79,13 +79,6 @@ class UserRegisterView(CreateView):
         return response
     
 
-class UserPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
-
-    form_class = UserPasswordChangeForm
-    template_name = 'users/password_change_form.html'
-    success_url = reverse_lazy('profile_detail')
-
-
 class CustomPasswordResetView(PasswordResetView):
 
     form_class = CustomPasswordResetForm

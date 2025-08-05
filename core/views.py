@@ -102,7 +102,7 @@ class OrderCreateView(CreateView):
     
         order = form.save(commit=False)
         order.status = 'new'
-        order.save()
+        rep = super().form_valid(form)
         form.save_m2m()
         
         messages.success(
@@ -110,4 +110,4 @@ class OrderCreateView(CreateView):
             'Заявка создана! Скоро с вами обязательно наверно вяжутся для подтверждения.'
         )
         
-        return super().form_valid(form)
+        return rep
